@@ -14,6 +14,7 @@ var health := 100
 const SPEED := 340.0
 const JUMP_SPEED := -720.0
 const GRAVITY := 1800.0
+const GROUND_Y := 560.0
 const PUNCH_DAMAGE := 7
 const KICK_DAMAGE := 10
 const PUNCH_REACH := 105.0
@@ -54,26 +55,30 @@ func _physics_process(delta: float) -> void:
 		attack_flash -= delta
 		queue_redraw()
 
-	if not is_on_floor():
-		velocity.y += GRAVITY * delta
+	var grounded := position.y >= GROUND_Y
+	if grounded:
+		position.y = GROUND_Y
+		velocity.y = 0.0
 	else:
-		velocity.y = min(velocity.y, 0.0)
+		velocity.y += GRAVITY * delta
 
 	if stunned <= 0.0:
 		if is_cpu:
 			_process_cpu(delta)
 		else:
-			_process_player()
+			_process_player(grounded)
 
 	move_and_slide()
 
 	position.x = clamp(position.x, 100.0, 1180.0)
-	position.y = min(position.y, 620.0)
+	if position.y > GROUND_Y:
+		position.y = GROUND_Y
+		velocity.y = 0.0
 
 	if attack_flash <= 0.0:
 		queue_redraw()
 
-func _process_player() -> void:
+func _process_player(grounded: bool) -> void:
 	var left := false
 	var right := false
 	var jump := false
@@ -109,11 +114,11 @@ func _process_player() -> void:
 	if direction != 0.0:
 		facing = sign(direction)
 
-	crouching = down and is_on_floor()
+	crouching = down and grounded
 	if crouching:
 		velocity.x *= 0.55
 
-	if jump and is_on_floor() and not crouching:
+	if jump and grounded and not crouching:
 		velocity.y = JUMP_SPEED
 
 	if punch:
@@ -147,7 +152,7 @@ func _process_cpu(delta: float) -> void:
 
 	if abs_distance < 145.0 and ai_choice <= 1:
 		_try_attack(KICK_DAMAGE if ai_choice == 1 else PUNCH_DAMAGE, KICK_REACH if ai_choice == 1 else PUNCH_REACH, 0.3)
-	elif abs_distance > 250.0 and ai_choice == 2 and is_on_floor():
+	elif abs_distance > 250.0 and ai_choice == 2 and position.y >= GROUND_Y:
 		velocity.y = JUMP_SPEED
 
 func _try_attack(damage: int, reach: float, recovery: float) -> void:

@@ -18,27 +18,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Godot 4.4.1
-        shell: bash
-        run: |
-          set -euo pipefail
-          GODOT_VERSION="4.4.1-stable"
-          GODOT_SHORT="4.4.1"
-          mkdir -p "$HOME/.local/bin"
-          curl -L --fail --retry 3             "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"             -o /tmp/godot.zip
-          unzip -q /tmp/godot.zip -d /tmp/godot
-          install "/tmp/godot/Godot_v${GODOT_VERSION}_linux.x86_64" "$HOME/.local/bin/godot"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          godot --version
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.4.1
+          use-dotnet: false
+          include-templates: true
 
-      - name: Install matching export templates
-        shell: bash
-        run: |
-          set -euo pipefail
-          GODOT_VERSION="4.4.1-stable"
-          mkdir -p "$HOME/.local/share/godot/export_templates/4.4.1.stable"
-          curl -L --fail --retry 3             "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"             -o /tmp/templates.tpz
-          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/4.4.1.stable/"
+      - name: Verify Godot
+        run: godot --version
 
       - name: Import project
         run: godot --headless --editor --path . --quit
@@ -70,16 +57,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "windows-${{ github.run_number }}"             dist/TuxCombat-Windows.zip             --title "Tux Combat Windows Build ${{ github.run_number }}"             --notes "Automated Windows build from commit ${{ github.sha }}."
+          gh release create "windows-${{ github.run_number }}" \
+            dist/TuxCombat-Windows.zip \
+            --title "Tux Combat Windows Build ${{ github.run_number }}" \
+            --notes "Automated Windows build from commit ${{ github.sha }}."
 
       - name: Create Linux release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "linux-${{ github.run_number }}"             dist/TuxCombat-Linux.tar.gz             --title "Tux Combat Linux Build ${{ github.run_number }}"             --notes "Automated Linux build from commit ${{ github.sha }}."
+          gh release create "linux-${{ github.run_number }}" \
+            dist/TuxCombat-Linux.tar.gz \
+            --title "Tux Combat Linux Build ${{ github.run_number }}" \
+            --notes "Automated Linux build from commit ${{ github.sha }}."
 
       - name: Create checksums release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "checksums-${{ github.run_number }}"             dist/SHA256SUMS.txt             --title "Tux Combat Checksums ${{ github.run_number }}"             --notes "SHA-256 checksums for the Windows and Linux builds from commit ${{ github.sha }}."
+          gh release create "checksums-${{ github.run_number }}" \
+            dist/SHA256SUMS.txt \
+            --title "Tux Combat Checksums ${{ github.run_number }}" \
+            --notes "SHA-256 checksums for the Windows and Linux builds from commit ${{ github.sha }}."

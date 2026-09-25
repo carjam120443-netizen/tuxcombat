@@ -1,0 +1,79 @@
+name: Build Tux Combat
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Export game builds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.4
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT_VERSION="4.4-stable"
+          mkdir -p "$HOME/.local/bin"
+          curl -L --fail --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/\${GODOT_VERSION}/Godot_v\${GODOT_VERSION}_linux.x86_64.zip" \
+            -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          install /tmp/godot/Godot_v\${GODOT_VERSION}_linux.x86_64 "$HOME/.local/bin/godot"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          godot --version
+
+      - name: Install Godot export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT_VERSION="4.4-stable"
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.4.stable"
+          curl -L --fail --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/\${GODOT_VERSION}/Godot_v\${GODOT_VERSION}_export_templates.tpz" \
+            -o /tmp/templates.tpz
+          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
+          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/4.4.stable/"
+
+      - name: Import project
+        run: godot --headless --editor --path . --quit
+
+      - name: Export Windows
+        run: |
+          mkdir -p build/windows
+          godot --headless --path . --export-release "Windows Desktop" build/windows/TuxCombat.exe
+
+      - name: Export Linux
+        run: |
+          mkdir -p build/linux
+          godot --headless --path . --export-release "Linux/X11" build/linux/TuxCombat.x86_64
+          chmod +x build/linux/TuxCombat.x86_64
+
+      - name: Package builds
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cd build
+          zip -qr ../dist/TuxCombat-Windows.zip windows
+          tar -czf ../dist/TuxCombat-Linux.tar.gz linux
+          cd ..
+          sha256sum dist/* > dist/SHA256SUMS.txt
+          ls -lh dist
+
+      - name: Upload build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: TuxCombat-builds
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30

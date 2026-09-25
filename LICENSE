@@ -1,21 +1,57 @@
-MIT License
+TUX COMBAT GAME LICENSE
+Version 1.0 — Copyright (c) 2026 carjam120443-netizen
 
-Copyright (c) 2026 carjam120443-netizen
+This license applies only to original Tux Combat material owned by the project
+copyright holder. Third-party software, artwork, characters, trademarks, fonts,
+music, sounds, and other assets are NOT automatically covered by this license
+and remain subject to their own licenses or permissions.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the Software), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. PERSONAL AND NON-COMMERCIAL USE
+You may download, run, study, modify, and make private or non-commercial
+derivative versions of Tux Combat.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. SOURCE CODE AND MODIFICATIONS
+You may view and modify the source code for personal, educational, testing,
+and non-commercial community projects. You may share modified source code when
+you include this license and clearly identify your changes.
 
-THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. GAME REDISTRIBUTION
+You may redistribute unmodified copies of the game or non-commercial modified
+builds, provided that this license and appropriate copyright notices are kept
+with the distribution.
+
+4. COMMERCIAL USE
+Commercial distribution, sale, paid downloads, paid services, commercial
+bundles, or monetized derivatives containing substantial original Tux Combat
+material require prior written permission from the copyright holder.
+
+5. PROJECT NAME AND BRANDING
+"Tux Combat" is the project name. This license does not grant permission to
+use the project name, logos, or branding in a way that suggests official
+endorsement of a derivative project.
+
+6. THIRD-PARTY MATERIAL
+A file or asset may have a different license. Where a third-party license
+grants broader or narrower rights, that third-party license controls that
+material. See CHARACTERS.md and any asset-credit files for project-specific
+information.
+
+7. CONTRIBUTIONS
+Unless a contributor and the project copyright holder agree otherwise in
+writing, contributions submitted to this repository are provided under this
+license.
+
+8. NO WARRANTY
+TUX COMBAT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY ARISING FROM THE USE OF THE SOFTWARE OR GAME.
+
+9. TERMINATION
+Permission under this license ends automatically if you materially violate its
+terms. Rights granted under separate third-party licenses are unaffected.
+
+This is a custom project license and is not intended to be presented as a
+standard open-source license. For legal questions about a commercial release,
+obtain appropriate legal advice.
